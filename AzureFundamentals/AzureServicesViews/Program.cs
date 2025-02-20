@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetValue<string>("BlobConnectionStrings")));
+
 builder.Services.AddSingleton<IContainerServices, ContainerServices>();
 
 var app = builder.Build();
