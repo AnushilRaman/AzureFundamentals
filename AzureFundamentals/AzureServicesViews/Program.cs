@@ -1,8 +1,21 @@
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Azure.Storage.Blobs;
 using AzureServicesViews.Services;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+/*
+ * Azure key vault to store secret keys or connection strings
+ */
+var keyVaultUri = builder.Configuration["AzureKeyVault:VaultUri"];
+var secretClient = new SecretClient(new Uri(keyVaultUri), new DefaultAzureCredential());
+KeyVaultSecret secret = await secretClient.GetSecretAsync(builder.Configuration["ConnectionStringName:ImageContainer"]);
+
+builder.Services.AddSingleton(x => new BlobServiceClient(
+    secret.Value
+    ));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
