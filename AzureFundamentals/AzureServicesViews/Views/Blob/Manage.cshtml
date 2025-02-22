@@ -15,14 +15,14 @@
         {
             <div class="row py-1">
                 <div class="col-6">
-                    <a asp-action="ViewFile" asp-controller="Blob" target="_blank" asp-route-name="@item">
+                    <a asp-action="ViewFile" asp-controller="Blob" asp-route-containerName="@Context.Request.Query["containerName"].ToString()" target="_blank" asp-route-name="@item">
                         @item
                     </a>
 
                 </div>
                 <div class="col-6">
 
-                    <a asp-action="DeleteFile" asp-controller="Blob" asp-route-name="@item" class="btn btn-danger">
+                    <a asp-action="DeleteFile" asp-controller="Blob" asp-route-containerName="@Context.Request.Query["containerName"].ToString()" asp-route-name="@item" class="btn btn-danger">
                         Delete
                     </a>
                 </div>

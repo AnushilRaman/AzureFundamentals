@@ -12,9 +12,12 @@ namespace AzureServicesViews.Services
         {
             _blobClient = blobClient;
         }
-        public Task DeleteBlob(string name, string containerName)
+        public async Task<bool> DeleteBlob(string name, string containerName)
         {
-            throw new NotImplementedException();
+            blobContainerClient = _blobClient.GetBlobContainerClient(containerName);
+            var result = await blobContainerClient.DeleteBlobIfExistsAsync(name);
+            if (result != null) { return true; }
+            return false;
         }
 
         public async Task<List<string>> GetAllBlobs(string containerName)
