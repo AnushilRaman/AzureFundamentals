@@ -1,4 +1,5 @@
 using AzureServicesViews.Models;
+using AzureServicesViews.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,15 +8,18 @@ namespace AzureServicesViews.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IContainerServices _containerServices;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IContainerServices containerServices)
         {
             _logger = logger;
+            _containerServices = containerServices;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+
+            return View(await _containerServices.GetAllContainerAndBlobs());
         }
 
         public IActionResult Privacy()
