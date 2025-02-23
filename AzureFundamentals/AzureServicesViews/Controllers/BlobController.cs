@@ -1,4 +1,5 @@
-﻿using AzureServicesViews.Services;
+﻿using AzureServicesViews.Models;
+using AzureServicesViews.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AzureServicesViews.Controllers
@@ -24,13 +25,13 @@ namespace AzureServicesViews.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> AddFile(string containerName, IFormFile formFile)
+        public async Task<IActionResult> AddFile(string containerName, Blob blob, IFormFile formFile)
         {
             if (formFile == null || formFile.Length < 1)
                 return View();
 
             var fileName = Path.GetFileNameWithoutExtension(formFile.FileName) + "_" + Guid.NewGuid() + Path.GetExtension(formFile.FileName);
-            var result = await _blobService.UploadBlob(fileName, formFile, containerName);
+            var result = await _blobService.UploadBlob(fileName, formFile, containerName, blob);
             if (result)
                 return RedirectToAction("Index", "Container");
             return View();
