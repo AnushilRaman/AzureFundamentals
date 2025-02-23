@@ -9,11 +9,13 @@ namespace AzureServicesViews.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IContainerServices _containerServices;
+        private readonly IBlobService _blobService;
 
-        public HomeController(ILogger<HomeController> logger, IContainerServices containerServices)
+        public HomeController(ILogger<HomeController> logger, IContainerServices containerServices, IBlobService blobService)
         {
             _logger = logger;
             _containerServices = containerServices;
+            _blobService = blobService;
         }
 
         public async Task<IActionResult> Index()
@@ -22,9 +24,9 @@ namespace AzureServicesViews.Controllers
             return View(await _containerServices.GetAllContainerAndBlobs());
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Images()
         {
-            return View();
+            return View(await _blobService.GetAllBlobsWithUri("dotnetcorecontainer-image"));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
